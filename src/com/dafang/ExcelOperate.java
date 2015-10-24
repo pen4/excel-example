@@ -203,6 +203,9 @@ public class ExcelOperate {
 		if (str == null) {
 			return "";
 		}
+		
+		
+		
 		int length = str.length();
 		for (int i = length - 1; i >= 0; i--) {
 			if (str.charAt(i) != 0x20) {
