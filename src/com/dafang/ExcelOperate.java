@@ -28,28 +28,28 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class ExcelOperate {
 
 	public static void main(String[] args) throws Exception {
-		//-----ÉèÖÃ¿ªÊ¼Ê±¼äÒÔ¼°Ê±¼ä¸ñÊ½----
+		//-----è®¾ç½®å¼€å§‹æ—¶é—´ä»¥åŠæ—¶é—´æ ¼å¼----
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SS"); 
 		TimeZone t = sdf.getTimeZone(); 
 		t.setRawOffset(0); 
 		sdf.setTimeZone(t); 
 		Long startTime = System.currentTimeMillis(); 
 
-		//------Á¬½ÓÊı¾İ¿â-------
+		//------è¿æ¥æ•°æ®åº“-------
 		Connection conn = null;
 		PreparedStatement pst = null;
 		try {
-			//·´Éä»úÖÆ£¬´´½¨Êı¾İ¿âDriver
+			//åå°„æœºåˆ¶ï¼Œåˆ›å»ºæ•°æ®åº“Driver
 			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Êı¾İ¿âÁ¬½Ó³É¹¦");
+			System.out.println("æ•°æ®åº“è¿æ¥æˆåŠŸ");
 			conn = java.sql.DriverManager.getConnection(  
-	                "jdbc:MySQL://192.168.1.3:3306/test", "root", "root"); //Êı¾İ¿âdatabase--test,username--root£¬password--root 
+	                "jdbc:MySQL://192.168.1.3:3306/test", "root", "root"); //æ•°æ®åº“database--test,username--rootï¼Œpassword--root 
 			conn.setAutoCommit(false); 
-			//Dictionary_Geology -- ±íÃû³Æ 
-			//Êı¾İ¿âµÚÒ»¸ö×Ö¶Îid--×ÔÔö³¤£¬²»ÓÃ´¦Àí
-			//chinese -- Êı¾İ¿âµÚ¶ş¸ö×Ö¶Î 
-			//english -- Êı¾İ¿âµÚÈı¸ö×Ö¶Î 
-			//content -- Êı¾İ¿âµÚËÄ¸ö×Ö¶Î 
+			//Dictionary_Geology -- è¡¨åç§° 
+			//æ•°æ®åº“ç¬¬ä¸€ä¸ªå­—æ®µid--è‡ªå¢é•¿ï¼Œä¸ç”¨å¤„ç†
+			//chinese -- æ•°æ®åº“ç¬¬äºŒä¸ªå­—æ®µ 
+			//english -- æ•°æ®åº“ç¬¬ä¸‰ä¸ªå­—æ®µ 
+			//content -- æ•°æ®åº“ç¬¬å››ä¸ªå­—æ®µ 
 			pst = (PreparedStatement) conn.prepareStatement("insert into Dictionary_Geology(chinese, english, content) values (?,?,?)" );
 			
 			
@@ -58,47 +58,47 @@ public class ExcelOperate {
 			int rowLength = result.length;
 			System.out.println(result.length);
 			for (int i = 0; i < rowLength; i++) {
-						//¸ù¾İÊı¾İ¿â±í×Ö¶ÎµÄ²»Í¬¿ÉÒÔ×öĞŞ¸Ä
+						//æ ¹æ®æ•°æ®åº“è¡¨å­—æ®µçš„ä¸åŒå¯ä»¥åšä¿®æ”¹
 						pst.setString(1, result[i][1]);//chinese
 						pst.setString(2, result[i][2]);//english
 						pst.setString(3, result[i][3]);//content
-						pst.addBatch(); //ÊÂÎñÕûÌåÌí¼Ó
+						pst.addBatch(); //äº‹åŠ¡æ•´ä½“æ·»åŠ 
 			}
-			//ÊÂÎñÕûÌåÌá½»
+			//äº‹åŠ¡æ•´ä½“æäº¤
 			pst.executeBatch(); 
 			conn.commit(); 
-			System.out.println("Êı¾İ¿âĞ´Èë³É¹¦"); 
+			System.out.println("æ•°æ®åº“å†™å…¥æˆåŠŸ"); 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("Êı¾İ¿âÁ¬½ÓÊ§°Ü");
+			System.out.println("æ•°æ®åº“è¿æ¥å¤±è´¥");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}  finally{
-			//¹Ø±ÕPreparedStatement
+			//å…³é—­PreparedStatement
 			if(pst != null) {
 				pst.close();
 				pst = null;
 			}
-			//¹Ø±ÕConnection
+			//å…³é—­Connection
 			if(conn != null) {
 				conn.close();
 				pst = null;
 			}
 		}
 		
-		//-----½áÊøÊ±¼ä------
+		//-----ç»“æŸæ—¶é—´------
 		Long endTime = System.currentTimeMillis(); 
-		System.out.println("ÓÃÊ±£º" + sdf.format(new Date(endTime - startTime))); 	
+		System.out.println("ç”¨æ—¶ï¼š" + sdf.format(new Date(endTime - startTime))); 	
 	}
 
 	/**
-	 * ¶ÁÈ¡ExcelµÄÄÚÈİ£¬µÚÒ»Î¬Êı×é´æ´¢µÄÊÇÒ»ĞĞÖĞ¸ñÁĞµÄÖµ£¬¶şÎ¬Êı×é´æ´¢µÄÊÇ¶àÉÙ¸öĞĞ
+	 * è¯»å–Excelçš„å†…å®¹ï¼Œç¬¬ä¸€ç»´æ•°ç»„å­˜å‚¨çš„æ˜¯ä¸€è¡Œä¸­æ ¼åˆ—çš„å€¼ï¼ŒäºŒç»´æ•°ç»„å­˜å‚¨çš„æ˜¯å¤šå°‘ä¸ªè¡Œ
 	 * 
 	 * @param file
-	 *            ¶ÁÈ¡Êı¾İµÄÔ´Excel
+	 *            è¯»å–æ•°æ®çš„æºExcel
 	 * @param ignoreRows
-	 *            ¶ÁÈ¡Êı¾İºöÂÔµÄĞĞÊı£¬±ÈÓ÷ĞĞÍ·²»ĞèÒª¶ÁÈë ºöÂÔµÄĞĞÊıÎª1
-	 * @return ¶Á³öµÄExcelÖĞÊı¾İµÄÄÚÈİ
+	 *            è¯»å–æ•°æ®å¿½ç•¥çš„è¡Œæ•°ï¼Œæ¯”å–»è¡Œå¤´ä¸éœ€è¦è¯»å…¥ å¿½ç•¥çš„è¡Œæ•°ä¸º1
+	 * @return è¯»å‡ºçš„Excelä¸­æ•°æ®çš„å†…å®¹
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -108,13 +108,13 @@ public class ExcelOperate {
 		int rowSize = 0;
 		BufferedInputStream in = new BufferedInputStream(new FileInputStream(
 				file));
-		// ´ò¿ªHSSFWorkbook
+		// æ‰“å¼€HSSFWorkbook
 		POIFSFileSystem fs = new POIFSFileSystem(in);
 		HSSFWorkbook wb = new HSSFWorkbook(fs);
 		HSSFCell cell = null;
 		for (int sheetIndex = 0; sheetIndex < wb.getNumberOfSheets(); sheetIndex++) {
 			HSSFSheet st = wb.getSheetAt(sheetIndex);
-			// µÚÒ»ĞĞÎª±êÌâ£¬²»È¡
+			// ç¬¬ä¸€è¡Œä¸ºæ ‡é¢˜ï¼Œä¸å–
 			for (int rowIndex = ignoreRows; rowIndex <= st.getLastRowNum(); rowIndex++) {
 				HSSFRow row = st.getRow(rowIndex);
 				if (row == null) {
@@ -131,7 +131,7 @@ public class ExcelOperate {
 					String value = "";
 					cell = row.getCell(columnIndex);
 					if (cell != null) {
-						// ×¢Òâ£ºÒ»¶¨ÒªÉè³ÉÕâ¸ö£¬·ñÔò¿ÉÄÜ»á³öÏÖÂÒÂë
+						// æ³¨æ„ï¼šä¸€å®šè¦è®¾æˆè¿™ä¸ªï¼Œå¦åˆ™å¯èƒ½ä¼šå‡ºç°ä¹±ç 
 						cell.setEncoding(HSSFCell.ENCODING_UTF_16);
 						switch (cell.getCellType()) {
 						case HSSFCell.CELL_TYPE_STRING:
@@ -152,7 +152,7 @@ public class ExcelOperate {
 							}
 							break;
 						case HSSFCell.CELL_TYPE_FORMULA:
-							// µ¼ÈëÊ±Èç¹ûÎª¹«Ê½Éú³ÉµÄÊı¾İÔòÎŞÖµ
+							// å¯¼å…¥æ—¶å¦‚æœä¸ºå…¬å¼ç”Ÿæˆçš„æ•°æ®åˆ™æ— å€¼
 							if (!cell.getStringCellValue().equals("")) {
 								value = cell.getStringCellValue();
 							} else {
@@ -193,11 +193,11 @@ public class ExcelOperate {
 	}
 
 	/**
-	 * È¥µô×Ö·û´®ÓÒ±ßµÄ¿Õ¸ñ
+	 * å»æ‰å­—ç¬¦ä¸²å³è¾¹çš„ç©ºæ ¼
 	 * 
 	 * @param str
-	 *            Òª´¦ÀíµÄ×Ö·û´®
-	 * @return ´¦ÀíºóµÄ×Ö·û´®
+	 *            è¦å¤„ç†çš„å­—ç¬¦ä¸²
+	 * @return å¤„ç†åçš„å­—ç¬¦ä¸²
 	 */
 	public static String rightTrim(String str) {
 		if (str == null) {
@@ -216,3 +216,4 @@ public class ExcelOperate {
 		return str.substring(0, length);
 	}
 }
+//ä¿®æ”¹æ³¨è§†-----
